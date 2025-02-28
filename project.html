@@ -1,197 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Mini Project 29</title>
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                font-family: sans-serif;
-            }
-            body {
-                height: 100vh;
-                display: grid;
-                place-content: center;
-            }
-            table {
-                width: 80vw;
-                border-collapse: collapse;
-                margin-bottom: 1rem;
-            }
-            th,
-            td {
-                border: 1px solid black;
-                text-align: center;
-                padding: 0.5rem;
-            }
-            button {
-                border: none;
-                padding: 0.25rem 0.5rem;
-                border-radius: 2px;
-                margin-right: 0.25rem;
-            }
-            .delete {
-                background-color: rgb(255, 142, 142);
-            }
-            .edit {
-                background-color: rgb(247, 255, 172);
-            }
-            .pagination {
-                display: flex;
-                justify-content: center;
-                gap: 0.5rem;
-            }
-            .pagination button {
-                padding: 0.5rem;
-                background-color: lightgray;
-                border: 1px solid black;
-                cursor: pointer;
-            }
-            .pagination button.active {
-                background-color: aquamarine;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>Uynab Paging</h1>
-        <table>
-            <tr>
-                <td><label for="name">Nama Buah</label></td>
-                <td><input type="text" name="name" id="name" /></td>
-            </tr>
-            <tr>
-                <td><label for="weight">Berat</label></td>
-                <td><input type="number" name="weight" id="weight" /></td>
-                <td>Kg</td>
-            </tr>
-            <tr>
-                <td><label for="image">Gambar</label></td>
-                <td><input type="url" name="image" id="image" /></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <button
-                        onclick="addData()"
-                        style="background-color: aquamarine"
-                    >
-                        Tambah
-                    </button>
-                </td>
-            </tr>
-        </table>
-        <br />
-        <hr />
-        <br />
-        <table id="fruitTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nama Buah</th>
-                    <th>Berat</th>
-                    <th>Gambar</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <div class="pagination" id="pagination"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini Project 29</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Uynab Paging</h1>
+    <table>
+      <tr>
+        <td><label for="name">Nama Buah</label></td>
+        <td><input type="text" name="name" id="name" /></td>
+      </tr>
+      <tr>
+        <td><label for="weight">Berat</label></td>
+        <td><input type="number" name="weight" id="weight" /></td>
+        <td>Kg</td>
+      </tr>
+      <tr>
+        <td><label for="image">Gambar</label></td>
+        <td><input type="url" name="image" id="image" /></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <button onclick="addData()" style="background-color: aquamarine">
+            Tambah
+          </button>
+        </td>
+      </tr>
+    </table>
+    <br />
+    <hr />
+    <br />
+    <table id="fruitTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nama Buah</th>
+          <th>Berat</th>
+          <th>Gambar</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div class="pagination" id="pagination"></div>
 
-        <script>
-            let fruits = [];
-            let currentPage = 1;
-            const rowsPerPage = 5;
-
-            function refreshTable() {
-                const tableBody = document.querySelector('#fruitTable tbody');
-                tableBody.innerHTML = '';
-
-                const start = (currentPage - 1) * rowsPerPage;
-                const end = start + rowsPerPage;
-                const paginatedData = fruits.slice(start, end);
-
-                paginatedData.forEach((fruit, index) => {
-                    const row = document.createElement('tr');
-
-                    row.innerHTML = `
-                    <td>${start + index + 1}</td>
-                    <td>${fruit.name}</td>
-                    <td>${fruit.weight} Kg</td>
-                    <td><img src="${
-                        fruit.image
-                    }" alt="Image" style="width: 50px; height: 50px;"></td>
-                    <td>
-                        <button class="edit" onclick="editData(${
-                            start + index
-                        })">Edit</button>
-                        <button class="delete" onclick="deleteData(${
-                            start + index
-                        })">Hapus</button>
-                    </td>
-                `;
-
-                    tableBody.appendChild(row);
-                });
-
-                renderPagination();
-            }
-
-            function renderPagination() {
-                const pagination = document.querySelector('#pagination');
-                pagination.innerHTML = '';
-
-                const totalPages = Math.ceil(fruits.length / rowsPerPage);
-
-                for (let i = 1; i <= totalPages; i++) {
-                    const button = document.createElement('button');
-                    button.textContent = i;
-                    button.classList.toggle('active', i === currentPage);
-                    button.onclick = () => {
-                        currentPage = i;
-                        refreshTable();
-                    };
-                    pagination.appendChild(button);
-                }
-            }
-
-            function addData() {
-                const nameInput = document.querySelector('#name');
-                const weightInput = document.querySelector('#weight');
-                const imageInput = document.querySelector('#image');
-
-                fruits.push({
-                    name: nameInput.value,
-                    weight: weightInput.value,
-                    image: imageInput.value,
-                });
-
-                nameInput.value = '';
-                weightInput.value = '';
-                imageInput.value = '';
-
-                currentPage = Math.ceil(fruits.length / rowsPerPage);
-                refreshTable();
-            }
-
-            function editData(index) {
-                const fruit = fruits[index];
-
-                document.querySelector('#name').value = fruit.name;
-                document.querySelector('#weight').value = fruit.weight;
-                document.querySelector('#image').value = fruit.image;
-
-                deleteData(index);
-            }
-
-            function deleteData(index) {
-                fruits.splice(index, 1);
-                if (currentPage > Math.ceil(fruits.length / rowsPerPage)) {
-                    currentPage--;
-                }
-                refreshTable();
-            }
-        </script>
-    </body>
+    <script src="script.js"></script>
+  </body>
 </html>

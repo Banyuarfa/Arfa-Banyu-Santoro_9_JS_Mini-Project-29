@@ -1,0 +1,47 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+body {
+  height: 100vh;
+  display: grid;
+  place-content: center;
+}
+table {
+  width: 80vw;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+th,
+td {
+  border: 1px solid black;
+  text-align: center;
+  padding: 0.5rem;
+}
+button {
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 2px;
+  margin-right: 0.25rem;
+}
+.delete {
+  background-color: rgb(255, 142, 142);
+}
+.edit {
+  background-color: rgb(247, 255, 172);
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.pagination button {
+  padding: 0.5rem;
+  background-color: lightgray;
+  border: 1px solid black;
+  cursor: pointer;
+}
+.pagination button.active {
+  background-color: aquamarine;
+}
